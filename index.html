@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>شاهي الجمر</title>
+
+  <style>
+    :root{
+      /* فاتح وهادئ */
+      --bg:#F7F7FC;
+      --panel:#FFFFFF;
+      --text:#1D2433;
+      --muted:#5B6477;
+      --border:rgba(29,36,51,.10);
+      --shadow: 0 10px 30px rgba(29,36,51,.08);
+
+      /* ألوان ناعمة متناسبة مع الشاهي/الجمر */
+      --primary:#C06A1A; /* بني/ذهبي شاهي */
+      --primary2:#E18B2E; /* ذهبي دافئ */
+      --accent:#5B3D2E; /* بني غامق */
+      --success:#1F9D61;
+
+      --radius-xl:22px;
+      --radius-lg:16px;
+      --radius-md:12px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(900px 420px at 10% 0%, rgba(225,139,46,.18), transparent 60%),
+        radial-gradient(900px 420px at 90% 5%, rgba(192,106,26,.14), transparent 55%),
+        radial-gradient(720px 420px at 60% 90%, rgba(91,61,46,.09), transparent 60%),
+        var(--bg);
+    }
+
+    a{color:inherit; text-decoration:none}
+    .container{width:min(1120px, 92%); margin:0 auto}
+
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(247,247,252,.75);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar__inner{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; flex-wrap:wrap;
+      padding:14px 0;
+    }
+
+    .brand{display:flex; align-items:center; gap:12px}
+    .brand__logo{
+      width:38px; height:38px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(255,255,255,.05) 45%),
+        linear-gradient(135deg, var(--primary2), var(--primary));
+      box-shadow: 0 14px 35px rgba(192,106,26,.22);
+      border:1px solid rgba(29,36,51,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .brand__logo:after{
+      content:"";
+      position:absolute; inset:-10px;
+      background: radial-gradient(circle at 70% 20%, rgba(255,255,255,.55), transparent 45%);
+      transform: rotate(18deg);
+    }
+    .brand__text{display:flex; flex-direction:column; line-height:1.2}
+    .brand__name{font-weight:900; letter-spacing:.2px}
+    .brand__tag{font-size:12px; color:var(--muted)}
+
+    .nav{display:flex; gap:10px; flex-wrap:wrap}
+    .nav a{
+      font-weight:800; font-size:13px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid transparent;
+      color:var(--muted);
+      background:transparent;
+      transition:.18s ease;
+    }
+    .nav a:hover{
+      border-color:var(--border);
+      color:var(--text);
+      background: rgba(255,255,255,.65);
+      transform: translateY(-1px);
+    }
+
+    /* عام */
+    .section{padding:58px 0}
+    .section--muted{
+      background: rgba(255,255,255,.65);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+
+    .grid{display:grid; gap:16px}
+    .grid--3{grid-template-columns:repeat(3, 1fr)}
+    .grid--2{grid-template-columns:repeat(2, 1fr)}
+    .card{
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+
+    h1,h2,h3{margin:0 0 12px}
+    h1{font-size:40px; letter-spacing:.2px}
+    h2{font-size:28px}
+    h3{font-size:18px}
+    .muted{color:var(--muted)}
+
+    html{scroll-behavior:smooth}
+
+    /* Hero */
+    .hero{padding:32px 0 18px}
+    .hero__grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .hero__title{
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .hero__title .glow{
+      background: linear-gradient(90deg, var(--primary2), var(--primary));
+      -webkit-background-clip:text; background-clip:text;
+      color:transparent;
+      text-shadow: 0 12px 35px rgba(192,106,26,.18);
+    }
+    .hero__p{font-size:16px; line-height:1.9; color:var(--muted)}
+    .hero__actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      font-weight:900;
+      transition:.18s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px)}
+    .btn--primary{
+      background: linear-gradient(135deg, var(--primary2), var(--primary));
+      border:none;
+      color:#fff;
+      box-shadow: 0 16px 35px rgba(192,106,26,.22);
+    }
+    .btn--soft{
+      background: rgba(192,106,26,.08);
+      border-color: rgba(192,106,26,.18);
+      color: var(--accent);
+    }
+
+    /* صور */
+    .img-gallery{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:14px;
+      margin-top:12px;
+    }
+    .img-tile{
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      position:relative;
+      min-height:170px;
+    }
+    .img-tile img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+    }
+    .img-tile:after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.00), rgba(0,0,0,.18));
+      pointer-events:none;
+    }
+    .img-caption{
+      position:absolute; right:10px; bottom:10px;
+      background: rgba(255,255,255,.85);
+      border:1px solid rgba(29,36,51,.08);
+      border-radius:14px;
+      padding:8px 10px;
+      font-weight:900;
+      font-size:12px;
+      color:var(--accent);
+      backdrop-filter: blur(8px);
+    }
+
+    /* المنتجات */
+    .product-card{
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      overflow:hidden;
+    }
+    .product-media{
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.7);
+      height:155px;
+    }
+    .product-media img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .product-row{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+    }
+    .price{
+      color:var(--primary);
+      font-weight:1000;
+      font-size:16px;
+      white-space:nowrap;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.6);
+      font-weight:900;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* الطلب */
+    .order{
+      display:grid; grid-template-columns:1fr .95fr;
+      gap:16px; align-items:start;
+    }
+    .form .form__row{margin-bottom:12px; display:flex; flex-direction:column; gap:6px}
+    label{font-weight:900; font-size:13px; color:var(--accent)}
+    input,select,textarea{
+      width:100%;
+      border-radius:14px;
+      border:1px solid rgba(29,36,51,.14);
+      background:#fff;
+      padding:12px 12px;
+      outline:none;
+      color:var(--text);
+      font-weight:800;
+    }
+    textarea{resize:vertical; min-height:96px}
+    input:focus,select:focus,textarea:focus{
+      border-color: rgba(225,139,46,.55);
+      box-shadow: 0 0 0 3px rgba(225,139,46,.15);
+    }
+    .form__actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:4px}
+    .order__preview{
+      position:sticky; top:92px;
+      background: rgba(255,255,255,.65);
+      border:1px solid var(--border);
+      border-radius:var(--radius-xl);
+      padding:16px;
+      box-shadow: var(--shadow);
+    }
+    .message-preview{
+      white-space:pre-wrap;
+      word-break:break-word;
+      background: rgba(29,36,51,.05);
+      border:1px solid rgba(29,36,51,.10);
+      border-radius:14px;
+      padding:14px;
+      min-height:180px;
+      color:var(--text);
+      font-weight:800;
+    }
+
+    .note-box{
+      border:1px dashed rgba(192,106,26,.35);
+      background: rgba(192,106,26,.06);
+      border-radius:16px;
+      padding:12px;
+      color:var(--accent);
+      font-weight:900;
+    }
+
+    /* بطاقة ولاء */
+    .loyalty{
+      display:flex; gap:16px; flex-wrap:wrap; align-items:stretch;
+    }
+    .loyalty__left{flex:1.1; min-width:280px}
+    .loyalty__right{flex:.9; min-width:240px}
+
+    .stamp-card{
+      border-radius:22px;
+      padding:18px;
+      border:1px solid rgba(29,36,51,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.65));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .stamp-card:before{
+      content:"";
+      position:absolute; inset:-80px;
+      background: radial-gradient(circle at 20% 20%, rgba(225,139,46,.25), transparent 45%),
+                  radial-gradient(circle at 80% 30%, rgba(192,106,26,.20), transparent 55%);
+      pointer-events:none;
+    }
+    .stamp-title{position:relative}
+    .stamps{
+      position:relative;
+      display:grid;
+      grid-template-columns:repeat(5, 1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+    .stamp{
+      aspect-ratio:1/1;
+      border-radius:16px;
+      border:1px solid rgba(29,36,51,.14);
+      background:#fff;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:1000; color:rgba(29,36,51,.35);
+      transition:.2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .stamp.active{
+      background: linear-gradient(135deg, rgba(225,139,46,.30), rgba(192,106,26,.18));
+      border-color: rgba(225,139,46,.55);
+      color: var(--accent);
+    }
+    .stamp svg{width:22px; height:22px}
+
+    .loyalty-note{
+      margin-top:12px;
+      position:relative;
+      border-radius:16px;
+      background: rgba(31,157,97,.08);
+      border:1px solid rgba(31,157,97,.18);
+      padding:12px;
+      color: var(--success);
+      font-weight:1000;
+      line-height:1.7;
+    }
+
+    @media (max-width: 980px){
+      .hero__grid{grid-template-columns:1fr}
+      h1{font-size:34px}
+      .grid--3{grid-template-columns:1fr}
+      .img-gallery{grid-template-columns:1fr}
+      .order{grid-template-columns:1fr}
+      .order__preview{position:static}
+      .stamps{grid-template-columns:repeat(5, 1fr)}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar__inner container">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true"></div>
+        <div class="brand__text">
+          <div class="brand__name">شاهي الجمر</div>
+          <div class="brand__tag">اطلب بكل سهولة عبر واتساب • نكهات شاهي لكل الأذواق</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#services">الخدمات</a>
+        <a href="#gallery">صور الشاهي</a>
+        <a href="#menu">المنيو</a>
+        <a href="#order">اطلب الآن</a>
+        <a href="#loyalty">بطاقة الولاء</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div>
+          <div class="hero__title">
+            <h1><span class="glow">شاهي الجمر</span></h1>
+            <p class="hero__p">
+              تجهيز نكهات غنية بلمسة جمر—اختر الحجم المناسب وعبّر عن رغبتك،
+              ثم أرسل الطلب عبر واتساب برسالة جاهزة.
+            </p>
+          </div>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#" id="whatsHeroBtn">اطلب عبر واتساب</a>
+            <a class="btn btn--soft" href="#menu">شاهد المنيو</a>
+          </div>
+
+          <div style="margin-top:18px" class="grid grid--2">
+            <div class="card" style="box-shadow:none">
+              <h3 style="margin-bottom:6px">تجهيز سريع</h3>
+              <div class="muted" style="line-height:1.8">جهّز طلبك خلال وقت قصير حسب النوع والحجم.</div>
+            </div>
+            <div class="card" style="box-shadow:none">
+              <h3 style="margin-bottom:6px">نظام طلب واضح</h3>
+              <div class="muted" style="line-height:1.8">حدد النوع + الحجم + الكمية + الملاحظات.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>اختر حجم طلبك</h3>
+          <div class="muted" style="line-height:1.8; margin-bottom:10px">
+            • صغير • متوسط • كبير
+          </div>
+
+          <div class="grid grid--3" style="grid-template-columns: repeat(3, 1fr)">
+            <div class="pill">صغير</div>
+            <div class="pill">متوسط</div>
+            <div class="pill">كبير</div>
+          </div>
+
+          <div style="margin-top:14px" class="note-box">
+            ⭐ بعد الطلب <span style="color:var(--primary2)">5 مرات</span> تحصل على <span style="color:var(--success)">كوب مجاني</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- صور -->
+      <div class="container" id="gallery" style="margin-top:18px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:12px;">
+          <h2 style="margin:0;">صور تُشهيك</h2>
+          <div class="muted" style="font-weight:900;">(استبدل روابط الصور لاحقًا بصور محلّك)</div>
+        </div>
+
+        <div class="img-gallery">
+          <div class="img-tile">
+            <img alt="شاهي ساخن" src="WhatsApp Image 2026-10-14 at 4.50.22 PM.jpeg" />
+            <div class="img-caption">شاهي ساخن</div>
+          </div>
+          <div class="img-tile">
+            <img alt="شاهي نعناع" src="https://images.unsplash.com/photo-1517701551924-5c9a0a7f7a12?auto=format&fit=crop&w=1200&q=80" />
+            <div class="img-caption">نعناع طازج</div>
+          </div>
+          <div class="img-tile">
+            <img alt="شاهي هيل" src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80" />
+            <div class="img-caption">هيل برائحة فخمة</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="section section--muted">
+      <div class="container">
+        <h2 style="margin-bottom:16px;">الخدمات</h2>
+        <div class="grid grid--3">
+          <div class="card">
+            <h3>شاهي بكل الأنواع</h3>
+            <div class="muted" style="line-height:1.8">
+              كلاسيك • نعناع • هيل • حسب رغبتك.
+            </div>
+          </div>
+          <div class="card">
+            <h3>حجم يناسبك</h3>
+            <div class="muted" style="line-height:1.8">
+              صغير / متوسط / كبير—اختر المناسب فورًا.
+            </div>
+          </div>
+          <div class="card">
+            <h3>طلب عبر واتساب</h3>
+            <div class="muted" style="line-height:1.8">
+              رسالة جاهزة تُجهز تفاصيل طلبك لتسريع الرد.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="section">
+      <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap; margin-bottom:14px;">
+          <h2 style="margin:0;">المنيو</h2>
+          <div class="muted" style="font-weight:900;">(أسعار تجريبية—سأبدّلها بعد تزويدي ببيانات المحل)</div>
+        </div>
+
+        <div class="grid grid--3" id="productsGrid"></div>
+
+        <div style="margin-top:16px" class="card">
+          <h3 style="margin-bottom:6px">ملاحظة سريعة</h3>
+          <div class="muted" style="line-height:1.8">
+            كل منتج لديه صورة—ويمكنك اختيار الحجم والكمية من نموذج الطلب.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loyalty -->
+    <section id="loyalty" class="section section--muted">
+      <div class="container">
+        <h2 style="margin-bottom:16px;">بطاقة الولاء</h2>
+
+        <div class="loyalty">
+          <div class="loyalty__left stamp-card">
+            <div class="stamp-title">
+              <h3 style="margin-bottom:6px;">اطلب 5 مرات… وكوب مجاني</h3>
+              <div class="muted" style="line-height:1.8; font-weight:900">
+                في كل مرة تُطلب فيها من “شاهي الجمر” يتم اعتماد ختم جديد.
+              </div>
+            </div>
+
+            <div class="stamps" id="stamps">
+              <!-- stamps injected -->
+            </div>
+
+            <div class="loyalty-note">
+              عند اكتمال 5 أختام: <b>تُمنح كوب مجاني</b> (سيتم تحديده حسب سياسة المحل).
+            </div>
+          </div>
+
+          <div class="loyalty__right card" style="box-shadow:none">
+            <h3>تقديرك الحالي</h3>
+            <div class="muted" style="line-height:1.8; margin-bottom:10px">
+              حدد عدد الطلبات السابقة (اختياري) لتظهر الأختام المتوقعة.
+            </div>
+
+            <div class="form__row" style="margin-bottom:14px">
+              <label>عدد طلباتك حتى الآن (0 - 5)</label>
+              <input type="number" id="loyaltyCount" min="0" max="5" value="2" />
+            </div>
+
+            <div class="form__actions">
+              <button class="btn btn--soft" type="button" onclick="updateStamps()">تحديث الأختام</button>
+              <button class="btn btn--primary" type="button" onclick="resetStamps()">إعادة</button>
+            </div>
+
+            <div class="muted" style="line-height:1.8; margin-top:14px; font-weight:900">
+              * هذا مجرد عرض بصري. بعد تزويدي بسياسة الولاء الفعلية سنعدل النص.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Order -->
+    <section id="order" class="section">
+      <div class="container">
+        <h2 style="margin-bottom:16px;">اطلب الآن عبر واتساب</h2>
+
+        <div class="order">
+          <form class="card form" onsubmit="return false;" aria-label="نموذج الطلب">
+            <div class="form__row">
+              <label>اسمك</label>
+              <input id="customerName" placeholder="مثال: أحمد" />
+            </div>
+
+            <div class="form__row">
+              <label>رقم الجوال</label>
+              <input id="customerPhone" placeholder="مثال: 05xxxxxxxx" />
+            </div>
+
+            <div class="form__row">
+              <label>اختر المنتج</label>
+              <select id="productSelect">
+                <option value="">— اختر —</option>
+              </select>
+            </div>
+
+            <div class="grid grid--2">
+              <div class="form__row">
+                <label>حجم الطلب</label>
+                <select id="sizeSelect">
+                  <option value="صغير">صغير</option>
+                  <option value="متوسط" selected>متوسط</option>
+                  <option value="كبير">كبير</option>
+                </select>
+              </div>
+
+              <div class="form__row">
+                <label>الكمية</label>
+                <input id="qty" type="number" min="1" value="1" />
+              </div>
+            </div>
+
+            <div class="form__row">
+              <label>ملاحظات (اختياري)</label>
+              <textarea id="notes" placeholder="مثال: بدون سكر / سكر زيادة / بدون نعناع ..."></textarea>
+            </div>
+
+            <div class="form__actions">
+              <a class="btn btn--primary" id="whatsOrderBtn" href="#">إرسال الطلب إلى واتساب</a>
+              <button class="btn btn--soft" type="button" onclick="fillSample()">ملء مثال سريع</button>
+            </div>
+
+            <div class="muted" style="margin-top:12px; font-weight:900; line-height:1.8">
+              بالأسفل ستشاهد معاينة الرسالة قبل الإرسال.
+            </div>
+          </form>
+
+          <aside class="order__preview">
+            <h3 style="margin-bottom:10px;">معاينة الرسالة</h3>
+            <div id="messagePreview" class="message-preview">—</div>
+            <div class="muted" style="margin-top:12px; font-weight:900; line-height:1.8">
+              عند الإرسال سيتم فتح واتساب برسالة جاهزة تحتوي تفاصيل طلبك.
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section section--muted">
+      <div class="container">
+        <div class="grid grid--2">
+          <div class="card" style="box-shadow:none">
+            <h3 style="margin-bottom:6px">واتساب</h3>
+            <div class="muted" style="line-height:1.8; font-weight:900">ضع رقم واتساب الحقيقي بعد تزويدي به.</div>
+            <div style="margin-top:10px" class="pill" id="whatsText">—</div>
+          </div>
+          <div class="card" style="box-shadow:none">
+            <h3 style="margin-bottom:6px">محتوى مرن</h3>
+            <div class="muted" style="line-height:1.8; font-weight:900">
+              يمكنك تزويدي لاحقًا بصور منتجاتك والأسعار والعروض وسيتم تحديث المنيو والرسائل تلقائيًا.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="section" style="padding:22px 0 30px; border-top:1px solid var(--border); background: rgba(255,255,255,.55);">
+    <div class="container" style="display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center;">
+      <div class="muted" style="font-weight:900;">© <span id="year"></span> شاهي الجمر</div>
+      <div class="muted" style="font-weight:900;">تم تصميمه لطلب سريع عبر واتساب</div>
+    </div>
+  </footer>
+
+  <script>
+    // ====== عدّل رقم واتساب هنا (بدون +) ======
+    const WHATSAPP_NUMBER = "9665XXXXXXXX";
+
+    // ====== بيانات تجريبية — استبدالها بالبيانات الحقيقية لاحقًا ======
+    const products = [
+      {
+        id: "classic",
+        name: "شاهي الجمر - كلاسيك",
+        price: "حسب الطلب",
+        type: "كلاسيك",
+        image: "https://images.unsplash.com/photo-1528825871115-3581a5387919?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        id: "mint",
+        name: "شاهي الجمر - نعناع",
+        price: "حسب الطلب",
+        type: "نعناع",
+        image: "https://images.unsplash.com/photo-1544787213-6d1a70a1e0b9?auto=format&fit=crop&w=1200&q=80"
+      },
+      {
+        id: "cardamom",
+        name: "شاهي الجمر - هيل",
+        price: "حسب الطلب",
+        type: "هيل",
+        image: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1200&q=80"
+      }
+    ];
+
+    // ====== الولاء (تصويري) ======
+    const stampsMax = 5;
+    function stampIcon(){
+      return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2l2.2 6.6H21l-5.4 3.9L17.8 20 12 15.8 6.2 20l2.2-7.5L3 8.6h6.8L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+      </svg>`;
+    }
+
+    function updateStamps(){
+      const val = Math.max(0, Math.min(stampsMax, parseInt(document.getElementById("loyaltyCount").value || "0", 10)));
+      const stampsEl = document.getElementById("stamps");
+      stampsEl.innerHTML = "";
+
+      for(let i=1;i<=stampsMax;i++){
+        const active = i <= val;
+        const div = document.createElement("div");
+        div.className = "stamp" + (active ? " active" : "");
+        div.innerHTML = active ? stampIcon() : "•";
+        stampsEl.appendChild(div);
+      }
+    }
+
+    function resetStamps(){
+      document.getElementById("loyaltyCount").value = 0;
+      updateStamps();
+    }
+
+    // ====== واتساب ======
+    function buildWhatsAppLink(message){
+      const text = encodeURIComponent(message);
+      return `https://wa.me/${WHATSAPP_NUMBER}?text=${text}`;
+    }
+
+    function createOrderMessage({customerName, customerPhone, productName, size, qty, notes}){
+      return [
+        "مرحبًا 👋",
+        "أرغب بطلب من شاهي الجمر:",
+        `- الاسم: ${customerName || "—"}`,
+        `- الجوال: ${customerPhone || "—"}`,
+        `- المنتج: ${productName || "—"}`,
+        `- الحجم: ${size || "—"}`,
+        `- الكمية: ${qty || 1}`,
+        `- ملاحظات: ${notes || "—"}`,
+        "",
+        "شكرًا لكم!"
+      ].join("\n");
+    }
+
+    // ====== المنيو + المنيو في الاختيار ======
+    function renderProducts(){
+      const grid = document.getElementById("productsGrid");
+      const sel = document.getElementById("productSelect");
+      grid.innerHTML = "";
+      sel.innerHTML = `<option value="">— اختر —</option>`;
+
+      products.forEach((p)=>{
+        // card
+        const card = document.createElement("div");
+        card.className = "card product-card";
+
+        card.innerHTML = `
+          <div class="product-media">
+            <img alt="${p.name}" src="${p.image}" loading="lazy"/>
+          </div>
+
+          <div class="product-row">
+            <div>
+              <h3 style="margin-bottom:6px">${p.name}</h3>
+              <div class="pill">النوع: ${p.type}</div>
+            </div>
+            <div class="price">${p.price}</div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between">
+            <button
+              type="button"
+              class="btn btn--soft"
+              style="padding:10px 12px; border-radius:14px"
+              onclick="selectProduct('${p.id}')"
+            >
+              اختاره للطلب
+            </button>
+
+            <button
+              type="button"
+              class="btn"
+              style="padding:10px 12px; border-radius:14px; background: rgba(255,255,255,.65)"
+              onclick="quickFillProduct('${p.id}')"
+            >
+              طلب سريع
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.textContent = p.name;
+        sel.appendChild(opt);
+      });
+    }
+
+    function selectProduct(productId){
+      const p = products.find(x=>x.id===productId);
+      if(!p) return;
+      document.getElementById("productSelect").value = p.name;
+      updatePreviewAndLinks();
+      document.getElementById("order").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function quickFillProduct(productId){
+      const p = products.find(x=>x.id===productId);
+      if(!p) return;
+      document.getElementById("productSelect").value = p.name;
+      document.getElementById("qty").value = 1;
+      document.getElementById("sizeSelect").value = "متوسط";
+      document.getElementById("notes").value = "";
+      updatePreviewAndLinks();
+      document.getElementById("order").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    function updatePreviewAndLinks(){
+      const name = document.getElementById("customerName").value;
+      const phone = document.getElementById("customerPhone").value;
+      const productName = document.getElementById("productSelect").value;
+      const size = document.getElementById("sizeSelect").value;
+      const qty = parseInt(document.getElementById("qty").value || "1", 10);
+      const notes = document.getElementById("notes").value;
+
+      const message = createOrderMessage({
+        customerName: name,
+        customerPhone: phone,
+        productName,
+        size,
+        qty: isNaN(qty) ? 1 : qty,
+        notes
+      });
+
+      document.getElementById("messagePreview").textContent = message;
+
+      document.getElementById("whatsOrderBtn").href = buildWhatsAppLink(message);
+
+      const heroMsg = "مرحبًا 👋 أنا مهتم بطلب من شاهي الجمر. من فضلك شاركوني الخيارات المتاحة.";
+      document.getElementById("whatsHeroBtn").href = buildWhatsAppLink(heroMsg);
+
+      document.getElementById("whatsText").textContent = `رقم واتساب: ${WHATSAPP_NUMBER}`;
+    }
+
+    function bindForm(){
+      ["customerName","customerPhone","productSelect","sizeSelect","qty","notes"].forEach(id=>{
+        const el = document.getElementById(id);
+        el.addEventListener("input", updatePreviewAndLinks);
+        el.addEventListener("change", updatePreviewAndLinks);
+      });
+    }
+
+    function fillSample(){
+      document.getElementById("customerName").value = "أحمد";
+      document.getElementById("customerPhone").value = "05xxxxxxxx";
+      document.getElementById("productSelect").value = products[0]?.name || "";
+      document.getElementById("sizeSelect").value = "متوسط";
+      document.getElementById("qty").value = 2;
+      document.getElementById("notes").value = "بدون سكر";
+      updatePreviewAndLinks();
+    }
+    window.fillSample = fillSample;
+
+    // init
+    document.getElementById("year").textContent = new Date().getFullYear();
+    renderProducts();
+    updatePreviewAndLinks();
+    bindForm();
+    updateStamps();
+  </script>
+</body>
+</html>
+```
+
+إذا تحب، أقدر أضبط لك المنيو فورًا لما ترسل:
+1) **رقم واتساب الحقيقي** بصيغة دولية (مثل 9665xxxxxxx بدون +)  
+2) قائمة المنتجات **مع الصور (روابط أو رفع/حفظ لاحقًا)** والأسعار  
+3) هل “الكوب المجاني” يكون **أي نوع** أم نوع محدد؟ وهل يشمل **أي حجم**؟
